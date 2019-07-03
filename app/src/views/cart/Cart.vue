@@ -57,7 +57,7 @@ function roundNum(val, n) {
   return Math.round(val * Math.pow(10, n)) / Math.pow(10, n);
 }
 
-function mergeList(src, dst, all) {
+function mergeList(src, dst) {
   src.forEach((element, index) => {
     element["selected"] = false;
     element["count"] = 1;
@@ -150,6 +150,7 @@ export default {
         price: this.selectPrice,
         cb: res => {
           this.$dialog.toast({ mes: "购买成功", timeout: 1000 });
+          this.user.updateInfo()
           this.$router.push("/profile/order");
         }
       });

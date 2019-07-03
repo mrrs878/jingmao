@@ -58,10 +58,10 @@ export default {
     },
     editAddAddress() {
       let { index, newAddress, placeholder, actionType } = this;
+      this.showEdit = false;
       if (newAddress === placeholder || newAddress === null) {
         return;
       }
-      this.showEdit = false;
       if (actionType) {
         this.user.editAddress({
           index,

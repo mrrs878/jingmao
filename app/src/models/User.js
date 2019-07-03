@@ -185,8 +185,8 @@ class User {
       .catch(err => console.log(err));
   }
 
-  editBlance({ blance, cb }) {
-    editBlance(blance)
+  editBlance({ balance, cb }) {
+    editBlance(balance)
       .then(res => {
         cb(res);
       })

@@ -3,7 +3,8 @@
     <profile-header title="用户信息"></profile-header>
     <div class="user-info">
       <br>
-      <img :src="user.data.avatar" alt="">
+      <img :src="user.data.avatar" v-if="user.data.avatar" alt="">
+      <img src="../../assets/img/default_avatar.png" v-else alt="">
       <br>
       <div class="info-item">
         <span>用户名：</span>

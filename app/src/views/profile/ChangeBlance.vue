@@ -2,14 +2,14 @@
   <div class="content">
     <profile-header title="账户余额"></profile-header>
     <div class="blance">
-      <span>￥ {{user.data.balance}}</span>
+      <span>￥ {{ Math.round(user.data.balance * Math.pow(10, 2)) / Math.pow(10, 2) }}</span>
       <yd-button type="primary" @click.native="showEdit = true">立即充值</yd-button>
     </div>
     <yd-popup v-model="showEdit" position="center" width="90%">
       <div style="display: flex;
       justify-content: center;
       align-items: center;">
-        <yd-spinner v-model="blance"></yd-spinner>
+        <yd-spinner v-model="balance"></yd-spinner>
         <yd-button @click.native="editBlance">完成</yd-button>
       </div>
     </yd-popup>
@@ -22,20 +22,22 @@ export default {
   data() {
     return {
       showEdit: false,
-      blance: 0
+      balance: 0
     };
   },
   methods: {
     editBlance() {
       this.showEdit = false;
       this.user.editBlance({
-        blance: this.blance,
+        balance: this.balance,
         cb: res => {
-          console.log(res);
           this.user.updateInfo()
         }
       });
     }
+  },
+  mounted() {
+    this.balance = this.user.data.balance
   },
   computed: {
     ...mapState(["user"])

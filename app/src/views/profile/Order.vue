@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content padding-top">
     <profile-header title="我的订单"></profile-header>
     <yd-infinitescroll :callback="loadList" ref="infinitescrollDemo">
       <ul slot="list" class="cart-list padding">
@@ -25,7 +25,7 @@
 <script>
 import { mapState } from "vuex";
 
-function mergeList(src, dst, all) {
+function mergeList(src, dst) {
   src.forEach((element, index) => {
     element["selected"] = false;
     element["count"] = 1;
@@ -59,7 +59,7 @@ export default {
         page: this.page,
         size: this.pageSize,
         cb: res => {
-          mergeList(res.data.cart, this.shopList);
+          mergeList(res.data.books, this.shopList);
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.finishLoad");
           if (res.code === 201) {
             this.$refs.infinitescrollDemo.$emit(
@@ -78,7 +78,8 @@ export default {
           this.user.removeBought({
             bid,
             cb: res => {
-              console.log(res);
+              this.shopList.splice(this.shopList.findIndex(elem => elem.bid === bid), 1);
+              this.user.updateInfo()
               this.$dialog.toast({ mes: res.msg, timeout: 1000 });
             }
           });
@@ -96,10 +97,15 @@ export default {
       size: this.pageSize,
       cb: res => {
         this.$dialog.loading.close();
+        console.log(res.data.books);
         mergeList(res.data.books, this.shopList);
+        this.page++;
+        if (res.code === 201) {
+          this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
+          return;
+        }
       }
     });
-    this.page++;
   }
 };
 </script>

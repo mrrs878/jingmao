@@ -368,6 +368,27 @@ const USER = {
         });
       });
   },
+  editBlance(req, res) {
+    let user = req.user;
+    user.balance = req.body.balance;
+    userRepo
+      .updateInfo(user)
+      .then(user => {
+        res.json({
+          code: 200,
+          msg: "修改成功",
+          msg: { balance: user.balance }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({
+          code: 201,
+          msg: "网络错误，待会重试",
+          data: { address: err }
+        });
+      });
+  },
   sendCode(req, res) {
     let value = Math.floor(Math.random() * 9999);
     let id = Math.random()
