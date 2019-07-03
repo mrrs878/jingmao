@@ -1,49 +1,49 @@
 # 基于express 的后端服务器，符合RESTful风格
 
 ## 目录结构
-├─server  
-|   ├─.eslintrc.json  
-|   ├─.gitignore  
-|   ├─api.md  
-|   ├─app.js  
-|   ├─package.json  
-|   ├─views  
-|   |   ├─error.ejs    
-|   |   └index.ejs    
-|   ├─services    
-|   |    ├─bookSer.js  
-|   |    ├─commentSer.js  
-|   |    ├─partitionSer.js  
-|   |    ├─secKillSer.js  
-|   |    └userSer.js  
-|   ├─routes  
-|   |   ├─book.js  
-|   |   ├─comment.js  
-|   |   ├─partition.js  
-|   |   ├─secKill.js  
-|   |   └user.js  
-|   ├─repo  
-|   |  ├─bookRepo.js  
-|   |  ├─codeRepo.js  
-|   |  ├─commentRepo.js  
-|   |  ├─partitionRepo.js  
-|   |  ├─secKillRepo.js  
-|   |  └userRepo.js  
-|   ├─public  
-|   |   ├─stylesheets  
-|   |   |      └style.css  
-|   |   ├─javascripts  
-|   |   ├─images  
-|   ├─models  
-|   |   ├─Book.js  
-|   |   ├─Code.js  
-|   |   ├─Comment.js  
-|   |   ├─Partition.js  
-|   |   ├─secKillShop.js  
-|   |   └User.js  
-|   ├─middleware  
-|   |     └jwt.js  
-|   ├─config  
-|   |   └config.js  
-|   ├─bin  
-|   |  └www  
+├─ server  
+│ ├─ bin  
+│ │ └─ www  
+│ ├─ config  
+│ │ └─ config.js  
+│ ├─ middleware  
+│ │ └─ jwt.js  
+│ ├─ models  
+│ │ ├─ Book.js  
+│ │ ├─ Code.js  
+│ │ ├─ Comment.js  
+│ │ ├─ Partition.js  
+│ │ ├─ User.js  
+│ │ └─ secKillShop.js  
+│ ├─ public  
+│ │ └─ stylesheets  
+│ │ └─ style.css  
+│ ├─ repo  
+│ │ ├─ bookRepo.js  
+│ │ ├─ codeRepo.js  
+│ │ ├─ commentRepo.js  
+│ │ ├─ partitionRepo.js  
+│ │ ├─ secKillRepo.js  
+│ │ └─ userRepo.js  
+│ ├─ routes  
+│ │ ├─ book.js  
+│ │ ├─ comment.js  
+│ │ ├─ partition.js  
+│ │ ├─ secKill.js  
+│ │ └─ user.js  
+│ ├─ services  
+│ │ ├─ bookSer.js  
+│ │ ├─ commentSer.js  
+│ │ ├─ partitionSer.js  
+│ │ ├─ secKillSer.js  
+│ │ └─ userSer.js  
+│ ├─ views  
+│ │ ├─ error.ejs  
+│ │ └─ index.ejs  
+│ ├─ .eslintrc.json  
+│ ├─ .gitignore  
+│ ├─ README.md  
+│ ├─ api.md  
+│ ├─ app.js  
+│ └─ package.json
+
