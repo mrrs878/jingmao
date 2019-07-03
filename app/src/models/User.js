@@ -44,6 +44,8 @@ class User {
 
   logout({ cb }) {
     localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartAll");
     store.dispatch("updateUserInfo", { user: {} });
     cb();
   }

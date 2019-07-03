@@ -180,7 +180,7 @@ const USER = {
           res.json({
             code: index + _index >= _cart.length - 1 ? 201 : 200,
             msg: "获取成功",
-            data: { cart }
+            data: { cart } 
           });
           return;
         }
@@ -219,11 +219,13 @@ const USER = {
     userRepo
       .updateInfo(user)
       .then(user => {
-        res.json({
-          code: 200,
-          msg: "添加成功",
-          data: user.cart
-        });
+        bookRepo.getBookById(bid).then((book) => {
+          res.json({
+            code: 200,
+            msg: "添加成功",
+            data: {book}
+          });
+        })
       })
       .catch(err => {
         console.log(err);
@@ -238,8 +240,7 @@ const USER = {
     let bid = req.params.bid;
     let type = req.params.type;
     let user = req.user;
-    console.log(type);
-    if (type) {
+    if (type === true) {
       user.cart.splice(user.cart.findIndex(em => em === bid), 1);
     } else {
       user.cart = user.cart.filter(em => em != bid);

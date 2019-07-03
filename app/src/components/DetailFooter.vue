@@ -37,11 +37,15 @@ export default {
       this.user.addCart({
         bid: this.bid,
         cb: res => {
+          let _cart = [res.data.book]
+          if(localStorage.getItem("cart")) {
+            _cart = _cart.concat(JSON.parse(localStorage.getItem("cart")))
+          }
+          localStorage.setItem("cart", JSON.stringify(_cart));
           this.$dialog.toast({
             mes: res.msg,
             timeout: 1500
           });
-          console.log(res);
         }
       });
     }

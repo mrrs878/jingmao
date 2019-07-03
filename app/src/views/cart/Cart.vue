@@ -10,7 +10,12 @@
               :icon-class="(shop.selected || all) ? 'iconselect' : 'iconcircle'"
               @click.native="toggleSelect(shop)"
             />
-            <img :src="shop.carousel[0]" width="30%" @click="$router.push(`/home/detail/shop/${shop.bid}`)" alt>
+            <img
+              :src="shop.carousel[0]"
+              width="30%"
+              @click="$router.push(`/home/detail/shop/${shop.bid}`)"
+              alt
+            />
             <div class="shop-info">
               <p class="title">{{shop.name}}</p>
               <div class="text">{{shop.content}}</div>
@@ -58,13 +63,14 @@ function roundNum(val, n) {
 }
 
 function mergeList(src, dst) {
+  let listItemCount = 0;
   src.forEach((element, index) => {
     element["selected"] = false;
-    element["count"] = 1;
+    element["count"] =  element["count"] || 1;
     if (
       !dst.find(em => {
         if (em.bid === element.bid) {
-          em["count"]++;
+          em["count"] += element["count"];
           return true;
         } else {
           return false;
@@ -97,6 +103,10 @@ export default {
   },
   methods: {
     loadList() {
+      if (localStorage.getItem("cartAll")) {
+        this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
+        return;
+      }
       this.user.getCart({
         page: this.page,
         size: this.pageSize,
@@ -109,22 +119,28 @@ export default {
             });
           }
           mergeList(res.data.cart, this.shopList);
+          localStorage.setItem("cart", JSON.stringify(this.shopList));
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.finishLoad");
           if (res.code === 201) {
             this.$refs.infinitescrollDemo.$emit(
               "ydui.infinitescroll.loadedDone"
             );
+            localStorage.setItem("cartAll", true)
             return;
           }
           this.page++;
         }
       });
     },
+    editCart() {},
     removeShop(bid) {
       this.$dialog.confirm({
         mes: "是否删除该书籍？",
         opts: () => {
           rmvSelect(this.shopList, bid);
+          let _cart = JSON.parse(localStorage.getItem("cart"));
+          rmvSelect(_cart, bid);
+          localStorage.setItem("cart", JSON.stringify(_cart));
           this.user.removeCart({
             bid,
             cb: res => {
@@ -150,7 +166,7 @@ export default {
         price: this.selectPrice,
         cb: res => {
           this.$dialog.toast({ mes: "购买成功", timeout: 1000 });
-          this.user.updateInfo()
+          this.user.updateInfo();
           this.$router.push("/profile/order");
         }
       });
@@ -234,18 +250,27 @@ export default {
   computed: {
     ...mapState(["user", "book"])
   },
-  created() {
+  mounted() {
     this.$dialog.loading.open("加载中...");
+    if (localStorage.getItem("cart")) {
+      this.$dialog.loading.close();
+      mergeList(JSON.parse(localStorage.getItem("cart")), this.shopList)
+      return;
+    }
     this.user.getCart({
       page: this.page,
       size: this.pageSize,
       cb: res => {
         this.$dialog.loading.close();
-        mergeList(res.data.cart, this.shopList);
+        let tmp = mergeList(res.data.cart, this.shopList);
+        localStorage.setItem("cart", JSON.stringify(this.shopList));
         this.page++;
         if (res.code === 201) {
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
           return;
+        }
+        if(this.shopList.length < 6) {
+          this.loadList()
         }
       }
     });
