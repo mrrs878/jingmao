@@ -34,7 +34,7 @@ export const editAddress = (index, address) =>
   ajax(`${USER_URL}/editAddress/${index}`, { index, address }, {}, "PUT");
 export const editBlance = blance =>
   ajax(`${USER_URL}/editBlance`, { blance }, {}, "PUT");
-export const sendCode = () => ajax(`${USER_URL}/code`, {}, {}, "POST");
+export const sendCode = () => ajax(`${USER_URL}/code`, {}, {}, "GET");
 export const editEmail = (id, value, oldPwd, email) =>
   ajax(`${USER_URL}/editEmail`, { id, value, oldPwd, email }, {}, "PUT");
 export const editPassword = (id, value, oldPwd, newPwd) =>

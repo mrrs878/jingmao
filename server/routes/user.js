@@ -52,7 +52,7 @@ router.put("/editAddress/*", jwtWare, (req, res) => {
   userService.editAddress(req, res);
 });
 
-router.post("/code", jwtWare, (req, res) => {
+router.get("/code", (req, res) => {
   userService.sendCode(req, res);
 });
 
