@@ -50,7 +50,7 @@
         合计
         <span>￥{{selectPrice}}</span>
       </span>
-      <button @click="settlement">结算({{selectList.length}})</button>
+      <button @click="settlement">结算({{selectBids.length}})</button>
     </div>
   </div>
 </template>
@@ -97,7 +97,8 @@ export default {
       showEditShop: false,
       showFooter: false,
       selectPrice: 0,
-      selectList: [],
+      selectBids: [],
+      slectShops: [],
       showTotalPrice: ""
     };
   },
@@ -115,7 +116,8 @@ export default {
             res.data.cart.forEach(element => {
               this.selectPrice += element.price;
               this.selectPrice = roundNum(this.selectPrice, 2);
-              this.selectList.push(element.bid);
+              this.selectBids.push(element.bid);
+              this.slectShops.push(element);
             });
           }
           mergeList(res.data.cart, this.shopList);
@@ -162,9 +164,14 @@ export default {
         return;
       }
       this.user.buyBooks({
-        bids: this.selectList,
+        bids: this.selectBids,
         price: this.selectPrice,
         cb: res => {
+          let _order = [...this.slectShops]
+          if(localStorage.getItem("order")) {
+            _order = _order.concat(JSON.parse(localStorage.getItem("order")))
+          }
+          localStorage.setItem("order", JSON.stringify(_order));
           this.$dialog.toast({ mes: "购买成功", timeout: 1000 });
           this.user.updateInfo();
           this.$router.push("/profile/order");
@@ -172,20 +179,21 @@ export default {
       });
     },
     toggleAll() {
-      if (!this.all && this.selectList.length >= this.shopList) {
+      if (!this.all && this.selectBids.length >= this.shopList) {
         this.all = true;
         return;
       }
       this.selectPrice = 0;
       this.selectCount = 0;
-      this.selectList = [];
+      this.selectBids = [];
       if (!this.all) {
         this.shopList.forEach(element => {
           this.selectPrice += element.price * element.count;
           this.selectPrice = roundNum(this.selectPrice, 2);
           this.selectCount += element.count;
           for (let index = 0; index < element.count; ++index) {
-            this.selectList.push(element.bid);
+            this.selectBids.push(element.bid);
+            this.selectShops.push(element)
           }
         });
       } else {
@@ -203,13 +211,15 @@ export default {
         this.selectPrice += shop.price * shop.count;
         this.selectPrice = roundNum(this.selectPrice, 2);
         for (let index = 0; index < shop.count; ++index) {
-          this.selectList.push(shop.bid);
+          this.selectBids.push(shop.bid);
+          this.slectShops.push(shop)
         }
       } else {
         this.selectPrice -= shop.price * shop.count;
         this.selectPrice = roundNum(this.selectPrice, 2);
         for (let index = 0; index < shop.count; ++index) {
-          rmvSelect(this.selectList, shop.bid);
+          rmvSelect(this.selectBids, shop.bid);
+          rmvSelect(this.selectShops, shop.bid);
         }
         shop.count = 1;
       }
@@ -234,14 +244,16 @@ export default {
         shop.count--;
         this.selectPrice -= shop.price;
         this.selectPrice = roundNum(this.selectPrice, 2);
-        rmvSelect(this.selectList, shop.bid);
+        rmvSelect(this.selectBids, shop.bid);
+        rmvSelect(this.selectShops, shop.bid)
       }
     },
     incCount(shop) {
       if (shop.selected === false && !this.all) {
         this.toggleSelect(shop);
       }
-      this.selectList.push(shop.bid);
+      this.selectBids.push(shop.bid);
+      this.selectShops.push(shop)
       shop.count++;
       this.selectPrice += shop.price;
       this.selectPrice = roundNum(this.selectPrice, 2);
@@ -262,11 +274,12 @@ export default {
       size: this.pageSize,
       cb: res => {
         this.$dialog.loading.close();
-        let tmp = mergeList(res.data.cart, this.shopList);
+        mergeList(res.data.cart, this.shopList);
         localStorage.setItem("cart", JSON.stringify(this.shopList));
         this.page++;
         if (res.code === 201) {
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
+          localStorage.setItem("cartAll", true)
           return;
         }
         if(this.shopList.length < 6) {

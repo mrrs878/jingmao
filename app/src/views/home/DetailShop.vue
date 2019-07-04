@@ -95,7 +95,8 @@ export default {
           rate
         },
         cb: res => {
-          console.log(res);
+          this.commentList.push({ uavatar: this.user.data.avatar, uname: this.user.data.name, rate, content })
+          this.user.updateInfo()
         }
       });
       this.showWriteComment = false;
@@ -106,7 +107,7 @@ export default {
         page: this.page,
         size: this.pageSize,
         cb: res => {
-          const _list = res.data.comments;
+          const _list = Object.freeze(res.data.comments);
           this.commentList = [...this.commentList, ..._list];
 
           if (_list.length < this.pageSize || this.page == 3) {
@@ -137,7 +138,7 @@ export default {
       page,
       size,
       cb: res => {
-        this.commentList = res.data.comments;
+        this.commentList = Object.freeze(res.data.comments);
       }
     });
   },

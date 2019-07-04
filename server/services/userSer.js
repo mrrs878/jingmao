@@ -180,7 +180,7 @@ const USER = {
           res.json({
             code: index + _index >= _cart.length - 1 ? 201 : 200,
             msg: "获取成功",
-            data: { cart } 
+            data: { cart }
           });
           return;
         }
@@ -200,7 +200,7 @@ const USER = {
         res.json({
           code: 200,
           msg: "购买成功",
-          data: user.bid
+          data: { books: user.bid }
         });
       })
       .catch(err => {
@@ -219,13 +219,13 @@ const USER = {
     userRepo
       .updateInfo(user)
       .then(user => {
-        bookRepo.getBookById(bid).then((book) => {
+        bookRepo.getBookById(bid).then(book => {
           res.json({
             code: 200,
             msg: "添加成功",
-            data: {book}
+            data: { book }
           });
-        })
+        });
       })
       .catch(err => {
         console.log(err);
@@ -265,7 +265,6 @@ const USER = {
   },
   writeComment(req, res) {
     let user = req.user;
-    console.log(user);
     let tmp = null;
     commentRepo
       .addComment({

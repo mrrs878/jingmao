@@ -4,7 +4,7 @@
     <yd-infinitescroll :callback="loadList" ref="infinitescrollDemo">
       <ul slot="list" class="cart-list padding">
         <li v-for="shop in shopList" :key="shop.index">
-          <img :src="shop.carousel[0]" width="30%" alt>
+          <img :src="shop.carousel[0]" width="30%" alt />
           <div class="shop-info">
             <p class="title">{{shop.name}}</p>
             <div class="text">{{shop.content}}</div>
@@ -55,16 +55,22 @@ export default {
   },
   methods: {
     loadList() {
+      if (localStorage.getItem("orderAll")) {
+        this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
+        return;
+      }
       this.user.getBought({
         page: this.page,
         size: this.pageSize,
         cb: res => {
           mergeList(res.data.books, this.shopList);
+          localStorage.setItem("order", JSON.stringify(this.shopList));
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.finishLoad");
           if (res.code === 201) {
             this.$refs.infinitescrollDemo.$emit(
               "ydui.infinitescroll.loadedDone"
             );
+            localStorage.setItem("orderAll", true);
             return;
           }
           this.page++;
@@ -78,8 +84,11 @@ export default {
           this.user.removeBought({
             bid,
             cb: res => {
-              this.shopList.splice(this.shopList.findIndex(elem => elem.bid === bid), 1);
-              this.user.updateInfo()
+              this.shopList.splice(
+                this.shopList.findIndex(elem => elem.bid === bid),
+                1
+              );
+              this.user.updateInfo();
               this.$dialog.toast({ mes: res.msg, timeout: 1000 });
             }
           });
@@ -92,6 +101,11 @@ export default {
   },
   mounted() {
     this.$dialog.loading.open("加载中...");
+    if (localStorage.getItem("order")) {
+      this.$dialog.loading.close();
+      mergeList(JSON.parse(localStorage.getItem("order")), this.shopList);
+      return;
+    }
     this.user.getBought({
       page: this.page,
       size: this.pageSize,
@@ -99,10 +113,15 @@ export default {
         this.$dialog.loading.close();
         console.log(res.data.books);
         mergeList(res.data.books, this.shopList);
+        localStorage.setItem("order", JSON.stringify(this.shopList));
         this.page++;
         if (res.code === 201) {
           this.$refs.infinitescrollDemo.$emit("ydui.infinitescroll.loadedDone");
+          localStorage.setItem("orderAll", true);
           return;
+        }
+        if (this.shopList.length < 6) {
+          this.loadList();
         }
       }
     });

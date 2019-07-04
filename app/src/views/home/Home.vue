@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <header class="header padding">
-      <img src="../../assets/img/jm_logo.png" width="60px;" alt>
+      <img src="../../assets/img/jm_logo.png" width="60px;" alt />
       <span type="text" class="search" @click="$router.push('/search')">搜索</span>
       <span class="right" @click="$router.push(user.isLogin() ? '/profile' : '/profile/login')">
         <icon-svg v-if="user.isLogin()" icon-class="iconprofile_light"></icon-svg>
@@ -9,61 +9,61 @@
       </span>
     </header>
     <div class="item padding">
-      <img src="../../assets/img/tslc-bt.jpg" alt width="100%">
+      <img src="../../assets/img/tslc-bt.jpg" alt width="100%" />
       <div class="container">
         <div @click="$router.push('/partition/css')">
           <span class="title">CSS(3)</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/css3.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/css3.jpg" width="100%" alt srcset />
         </div>
         <div @click="$router.push('/partition/html')" class="left-right">
           <span class="title">HTML(5)</span>
           <p class="favorable">买3送1</p>
-          <img src="../../assets/img/html5.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/html5.jpg" width="100%" alt srcset />
         </div>
         <div @click="$router.push('/partition/js')">
           <span class="title">javascript</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/javascript.jpg" width="70%" alt srcset>
+          <img src="../../assets/img/javascript.jpg" width="70%" alt srcset />
         </div>
         <div class="top-bottom" @click="$router.push('/partition/platform')">
           <span class="title">Vue.js/React</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/react_vue.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/react_vue.jpg" width="100%" alt srcset />
         </div>
         <div class="top-bottom left-right" @click="$router.push('/partition/jQuery')">
           <span class="title">jQuery</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/jquery.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/jquery.jpg" width="100%" alt srcset />
         </div>
         <div class="top-bottom" @click="$router.push('/partition/nodejs')">
           <span class="title">Node.js</span>
           <p class="favorable">每满79减30</p>
-          <img src="../../assets/img/node.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/node.jpg" width="100%" alt srcset />
         </div>
         <div @click="$router.push('/partition/flutter')">
           <span class="title">flutter</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/flutter.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/flutter.jpg" width="100%" alt srcset />
         </div>
         <div class="left-right" @click="$router.push('/partition/nosql')">
           <span class="title">NoSQL</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/nosql.jpg" width="100%" alt srcset>
+          <img src="../../assets/img/nosql.jpg" width="100%" alt srcset />
         </div>
         <div @click="$router.push('/partition/go')">
           <span class="title">Go</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/go.png" width="100%" alt srcset>
+          <img src="../../assets/img/go.png" width="100%" alt srcset />
         </div>
       </div>
     </div>
     <div class="sec-kill padding">
-      <img src="../../assets/img/mao_title.jpg" width="100%" alt>
+      <img src="../../assets/img/mao_title.jpg" width="100%" alt />
       <div class="kill-wrap" ref="killWrap">
         <ul class="kill-list" ref="killTab">
           <li class="kill-item" v-for="shop in secKillShops" :key="shop.index">
-            <img :src="shop.cover" width="100%" alt>
+            <img :src="shop.cover" width="100%" alt />
             <p class="name">{{shop.name}}</p>
             <p class="price">￥ {{shop.killPrice}}</p>
             <P class="no-price">￥ {{shop.price}}</P>
@@ -71,38 +71,40 @@
         </ul>
       </div>
     </div>
-    <div class="recommend">
-      <img src="../../assets/img/mao_title -1.jpg" width="100%" alt>
-      <yd-infinitescroll :callback="loadList" ref="infinitescrollDemo">
-        <yd-list
-          theme="1"
-          slot="list"
-          style="display: flex; justify-content: space-around; flex-wrap: wrap;"
-        >
-          <yd-list-item
-            v-for="item in bookList"
-            :key="item.index"
-            style="margin-top: 0.2rem; width: 48%;"
-            @click.native="$router.push(`/home/detail/shop/${item.bid}`)"
+    <keep-alive>
+      <div class="recommend">
+        <img src="../../assets/img/mao_title -1.jpg" width="100%" alt />
+        <yd-infinitescroll :callback="loadList" ref="infinitescrollDemo">
+          <yd-list
+            theme="1"
+            slot="list"
+            style="display: flex; justify-content: space-around; flex-wrap: wrap;"
           >
-            <img slot="img" :src="item.carousel[0]">
-            <span slot="title">{{item.name}}</span>
-            <yd-list-other slot="other">
-              <div>
-                <span class="list-price" style="color: red; font-size: 0.32rem;">
-                  <p
-                    style="font-size: 0.24rem; border: 1px solid red; margin: 0.1rem; border-radius: 5px; padding:1px;"
-                  >京猫自营</p>
-                  <em>¥</em>
-                  {{item.price}}
-                </span>
-              </div>
-            </yd-list-other>
-          </yd-list-item>
-        </yd-list>
-        <span slot="doneTip">啦啦啦，啦啦啦，没有数据啦~~</span>
-      </yd-infinitescroll>
-    </div>
+            <yd-list-item
+              v-for="item in bookList"
+              :key="item.index"
+              style="margin-top: 0.2rem; width: 48%;"
+              @click.native="$router.push(`/home/detail/shop/${item.bid}`)"
+            >
+              <img slot="img" :src="item.carousel[0]" />
+              <span slot="title">{{item.name}}</span>
+              <yd-list-other slot="other">
+                <div>
+                  <span class="list-price" style="color: red; font-size: 0.32rem;">
+                    <p
+                      style="font-size: 0.24rem; border: 1px solid red; margin: 0.1rem; border-radius: 5px; padding:1px;"
+                    >京猫自营</p>
+                    <em>¥</em>
+                    {{item.price}}
+                  </span>
+                </div>
+              </yd-list-other>
+            </yd-list-item>
+          </yd-list>
+          <span slot="doneTip">啦啦啦，啦啦啦，没有数据啦~~</span>
+        </yd-infinitescroll>
+      </div>
+    </keep-alive>
     <yd-backtop></yd-backtop>
     <div style="height: 2rem;"></div>
   </div>

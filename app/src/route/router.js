@@ -13,6 +13,13 @@ Vue.use(Router);
 let router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
+  scrollBehavior(to, from, savePosition) {
+    if (savePosition) {
+      return savePosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  },
   routes: [...profileRoute, ...homeRoute, ...searchRoute, ...cartRoute]
 });
 router.beforeEach((to, from, next) => {

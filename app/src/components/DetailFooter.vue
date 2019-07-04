@@ -42,6 +42,7 @@ export default {
             _cart = _cart.concat(JSON.parse(localStorage.getItem("cart")))
           }
           localStorage.setItem("cart", JSON.stringify(_cart));
+          this.user.updateInfo();
           this.$dialog.toast({
             mes: res.msg,
             timeout: 1500
