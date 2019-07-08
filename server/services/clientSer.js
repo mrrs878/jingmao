@@ -5,8 +5,9 @@ let { secret } = require("../config/config");
 
 const CLIENT = {
   signin(req, res) {
+    console.log(req.body);
     clientRepo
-      .getClient(req.body.name)
+      .getClientByName(req.body.name)
       .then(client => {
         if (client.pwd !== req.body.pwd) {
           res.json({
@@ -20,7 +21,6 @@ const CLIENT = {
             .valueOf();
           let clientInfo = client;
           clientInfo["pwd"] = "";
-          console.log(clientInfo);
           let token = jwt.encode(
             {
               client: clientInfo,
@@ -57,6 +57,25 @@ const CLIENT = {
         res.json({
           code: 200,
           msg: "注册成功",
+          data: { client }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({
+          code: 201,
+          msg: "网络错误，待会重试",
+          data: { err }
+        });
+      });
+  },
+  getClient(req, res) {
+    clientRepo
+      .getClient(req.params.cid)
+      .then(client => {
+        res.json({
+          code: 200,
+          msg: "获取成功",
           data: { client }
         });
       })

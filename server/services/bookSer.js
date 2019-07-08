@@ -58,7 +58,7 @@ const BOOK_SERVICE = {
   },
   getBook(req, res) {
     bookRepo
-      .getBookById(req.url.substring(1))
+      .getBookById(req.params.bid)
       .then(result => {
         res.json({
           code: 200,
@@ -119,32 +119,19 @@ const BOOK_SERVICE = {
   },
   addBook(req, res) {
     let _book = req.body.book;
+    _book["cltid"] = req.client.cid;
     bookRepo
-      .getBookById(_book.bid)
+      .addBook(_book)
       .then(book => {
-        if (book) {
-          book.cltid.push(req.client.cid);
-          bookRepo.updateBook(book).then(book => {
-            res.json({
-              code: 200,
-              msg: "添加成功",
-              data: { book }
-            });
+        let _client = req.client;
+        _client.bid.push(_book.bid);
+        clientRepo.updateInfo(_client).then(() => {
+          res.json({
+            code: 200,
+            msg: "添加成功",
+            data: { book }
           });
-        } else {
-          _book["cltid"] = req.client.cid;
-          bookRepo.addBook(_book).then(book => {
-            let _client =req.client
-            _client.bid.push(_book.bid)
-            clientRepo.updateInfo(_client).then(() => {
-              res.json({
-                code: 200,
-                msg: "添加成功",
-                data: { book }
-              });
-            });
-          });
-        }
+        });
       })
       .catch(err => {
         console.log(err);

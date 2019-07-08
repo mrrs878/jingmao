@@ -1,8 +1,8 @@
-import { UPDATE_USER, UPDATE_BOOK, UPDATE_COMMENT } from './mutation-types'
+import { UPDATE_CLIENT, UPDATE_BOOK, UPDATE_COMMENT } from './mutation-types'
 
 export default {
-  [UPDATE_USER](state, user) {
-    state.user.data = user
+  [UPDATE_CLIENT](state, client) {
+    state.client.data = client
   },
   [UPDATE_BOOK](state, book) {
     state.book = book

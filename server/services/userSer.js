@@ -6,6 +6,8 @@ let userRepo = require("../repo/userRepo");
 let bookRepo = require("../repo/bookRepo");
 let commentRepo = require("../repo/commentRepo");
 let codeRepo = require("../repo/codeRepo");
+let orderRepo = require("../repo/orderRepo");
+let clientRepo = require('../repo/clientRepo')
 
 const USER = {
   signin(req, res) {
@@ -189,8 +191,23 @@ const USER = {
   },
   buyBooks(req, res) {
     let bids = req.body.bids;
+    let shops = req.body.shops;
     let price = req.body.price;
     let user = req.user;
+
+    shops.forEach(async element => {
+      const order = await orderRepo.addOrder({
+        bid: element.bid,
+        uid: user.uid,
+        cltid: element.cltid,
+        oid: Math.random()
+          .toString(36)
+          .slice(2)
+      });
+      const client = await clientRepo.getClient(order.cltid);
+      client.oid.push(order.oid);
+      clientRepo.updateInfo(client);
+    });
 
     user.bid = user.bid.concat(bids);
     user.balance -= price;
@@ -265,7 +282,7 @@ const USER = {
   },
   writeComment(req, res) {
     let user = req.user;
-    let tmp = null;
+    let _comment = null;
     commentRepo
       .addComment({
         ...req.body.comment,
@@ -274,12 +291,22 @@ const USER = {
         uavatar: user.avatar
       })
       .then(comment => {
-        tmp = comment;
+        _comment = comment;
         return userRepo.getUserById(user.uid);
       })
       .then(user => {
-        user.cid.push(tmp.cid);
-        userRepo.updateInfo(user);
+        user.cid.push(_comment.cid);
+        return userRepo.updateInfo(user);
+      })
+      .then(() => {
+        return bookRepo.getBookById(req.body.comment.bid);
+      })
+      .then(book => {
+        book.cid.push(_comment.cid);
+        console.log(book.cid);
+        return bookRepo.updateBook(book);
+      })
+      .then(() => {
         res.json({
           code: 200,
           msg: "评价成功",

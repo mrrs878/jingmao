@@ -52,11 +52,10 @@ export default {
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.7)',
           })
-          this.user.signin({
+          this.client.signin({
             name: this.ruleForm.name,
             pwd: this.ruleForm.password,
             cb: result => {
-              console.log(result)
               loading.close()
               if (result.token) {
                 this.$router.push('/home')
@@ -76,7 +75,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState(['client']),
   },
 }
 </script>

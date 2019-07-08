@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <side-menu></side-menu>
+    <div style="height: 100px;width: 100%;"></div>
     <div class="book-cover">
-      <img :src="bookInfo.cover" alt>
+      <img :src="bookInfo.carousel[0]" alt />
     </div>
     <div class="book-info">
       <p>书籍名称: {{bookInfo.name}}</p>
@@ -13,12 +14,14 @@
     </div>
     <div class="book-comments">
       <p>评论</p>
-      <br>
+      <br />
       <ul>
         <li v-for="item in bookInfo.comments" :key="item.index">
           <div class="comment">
             <div class="user-info">
-              <a :href="item.uid"><img :src="item.uavatar" alt></a>
+              <a :href="item.uid">
+                <img :src="item.uavatar" alt />
+              </a>
               <span class="uname">{{item.uname}}</span>
             </div>
             <p class="content">{{item.content}}</p>
@@ -43,7 +46,7 @@ export default {
     ...mapState(['book', 'user']),
   },
   beforeMount() {
-    let currentPath = this.$router.currentRoute.fullPath
+    let currentPath = this.$route.fullPath
     let bid = currentPath.substring(currentPath.lastIndexOf('/') + 1)
     this.book.getBook({
       bid,
@@ -74,6 +77,21 @@ export default {
     height: 300px;
     p {
       margin: 10px 0 20px;
+      position: relative;
+      display: block;
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        height: 1px;
+        width: 100%;
+        background: #ccc;
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+      }
     }
   }
   .book-comments {

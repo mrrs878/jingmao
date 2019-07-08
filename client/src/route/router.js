@@ -6,8 +6,9 @@ import bookRouter from './bookRouter'
 import userRouter from './userRouter'
 import commentRouter from './commentRouter'
 import secKillRouter from './secKillRouter'
+import orderRouter from './orderRouter'
 
-const INTERCEPTOR = ['index', 'signup']
+const NO_INTERCEPTOR = ['index', 'signup']
 
 Vue.use(Router)
 
@@ -18,13 +19,14 @@ let router = new Router({
     ...bookRouter,
     ...userRouter,
     ...commentRouter,
-    ...secKillRouter
+    ...secKillRouter,
+    ...orderRouter
   ]
 })
 
 router.beforeEach((to, from, next) => {
   // to and from are both route objects. must call `next`.
-  if (!localStorage.token && !INTERCEPTOR.includes(to.name)) {
+  if (!localStorage.token && !NO_INTERCEPTOR.includes(to.name)) {
     router.app.$message({
       message: '警告哦，请先登录',
       type: 'warning',

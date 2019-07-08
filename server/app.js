@@ -11,6 +11,7 @@ var bookRouter = require("./routes/book");
 var commentRouter = require("./routes/comment");
 var secKillRouter = require("./routes/secKill");
 var partitionRouter = require("./routes/partition");
+var orderRouter = require("./routes/order");
 
 var clientRouter = require("./routes/client");
 
@@ -40,6 +41,7 @@ app.use("/api/secKill", secKillRouter);
 app.use("/api/partition", partitionRouter);
 
 app.use("/api/client", clientRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.json("qqqqq");

@@ -4,7 +4,7 @@ const COMMENT_SERVICE = {
   getCommentsByBid(req, res) {
     commentRepo
       .getCommentsByBid(
-        req.url.substring(req.url.lastIndexOf("/") + 1),
+        req.params.bid,
         req.body.page,
         req.body.size
       )

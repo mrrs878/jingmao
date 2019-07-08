@@ -98,7 +98,7 @@ export default {
       showFooter: false,
       selectPrice: 0,
       selectBids: [],
-      slectShops: [],
+      selectShops: [],
       showTotalPrice: ""
     };
   },
@@ -117,7 +117,7 @@ export default {
               this.selectPrice += element.price;
               this.selectPrice = roundNum(this.selectPrice, 2);
               this.selectBids.push(element.bid);
-              this.slectShops.push(element);
+              this.selectShops.push(element);
             });
           }
           mergeList(res.data.cart, this.shopList);
@@ -165,9 +165,10 @@ export default {
       }
       this.user.buyBooks({
         bids: this.selectBids,
+        shops: this.selectShops,
         price: this.selectPrice,
         cb: res => {
-          let _order = [...this.slectShops]
+          let _order = [...this.selectShops]
           if(localStorage.getItem("order")) {
             _order = _order.concat(JSON.parse(localStorage.getItem("order")))
           }
@@ -212,7 +213,7 @@ export default {
         this.selectPrice = roundNum(this.selectPrice, 2);
         for (let index = 0; index < shop.count; ++index) {
           this.selectBids.push(shop.bid);
-          this.slectShops.push(shop)
+          this.selectShops.push(shop)
         }
       } else {
         this.selectPrice -= shop.price * shop.count;

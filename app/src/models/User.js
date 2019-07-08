@@ -81,8 +81,8 @@ class User {
       });
   }
 
-  buyBooks({ bids, price, cb }) {
-    buyBooks(bids, price)
+  buyBooks({ bids, shops, price, cb }) {
+    buyBooks(bids, shops, price)
       .then(res => {
         cb(res);
       })

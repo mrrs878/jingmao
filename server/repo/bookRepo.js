@@ -27,7 +27,7 @@ const BOOK = {
     return Book.find({ name: {$regex: eval(`/${name}/i`)} })
   },
   updateBook(book) {
-    let _book = new Book({ ...book })
+    let _book = new Book(book)
     _book.utime = new moment().format("YYYY--MM--DD HH:mm:ss")
     return _book.save()
   },

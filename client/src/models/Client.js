@@ -1,7 +1,7 @@
-import { signin, signup, getUser } from '../api/api'
+import { signin, signup, getClient, getOrders } from '../api/api'
 import store from '../store/store'
 
-class User {
+class Client {
   constructor(data = {}) {
     this.data = data
   }
@@ -13,6 +13,14 @@ class User {
         localStorage.setItem('token', data.token)
         if (data.token) {
           store.dispatch('updateClient', data.client)
+          setInterval(() => {
+            this.getClient({
+              cid: data.client.cid,
+              cb: res => {
+                store.dispatch('updateClient', res.data.data.client)
+              }
+            })
+          }, 60000)
         }
         cb(data)
       })
@@ -31,8 +39,8 @@ class User {
       })
   }
 
-  getUser({ cid, cb }) {
-    getUser(cid)
+  getClient({ cid, cb }) {
+    getClient(cid)
       .then(result => {
         cb(result)
       })
@@ -42,7 +50,7 @@ class User {
   }
 
   updateInfo() {
-    this.getUser(store.state.client.data.cid)
+    getClient(store.state.client.data.cid)
       .then(res => {
         store.dispatch('updateClient', res.data.data.client)
       })
@@ -50,6 +58,16 @@ class User {
         console.log(err)
       })
   }
+
+  getOrders({ page, size, cb }) {
+    getOrders(page, size)
+      .then(res => {
+        cb(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 }
 
-export default User
+export default Client

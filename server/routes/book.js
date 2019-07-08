@@ -37,7 +37,7 @@ router.get("/partition/:name/:page/:size", (req, res) => {
   bookServeice.getPartition(req, res)
 })
 
-router.get("/*", (req, res) => {
+router.get("/:bid", (req, res) => {
   bookServeice.getBook(req, res);
 });
 

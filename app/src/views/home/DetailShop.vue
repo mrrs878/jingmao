@@ -138,7 +138,7 @@ export default {
       page,
       size,
       cb: res => {
-        this.commentList = Object.freeze(res.data.comments);
+        this.commentList = res.data.comments;
       }
     });
   },

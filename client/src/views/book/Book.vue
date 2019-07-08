@@ -107,7 +107,7 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      if (this.books.length === this.user.data.bid.length) {
+      if (this.books.length === this.client.data.bid.length) {
         this.tableDatas = group(this.books, this.pageSize)
         this.tableData = this.tableDatas[this.currentPage - 1]
         return
@@ -119,7 +119,7 @@ export default {
 
       if (
         this.currentPage <= this.lastPage ||
-        this.books.length === this.user.data.bid.length
+        this.books.length === this.client.data.bid.length
       ) {
         this.tableData = this.tableDatas[val - 1]
         return
@@ -149,12 +149,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(['book', 'user']),
+    ...mapState(['book', 'client']),
   },
   mounted() {
-    this.totalContent = this.user.data.bid.length
+    this.totalContent = this.client.data.bid.length
     let _books = localStorage.getItem('books')
-    if (_books) {
+    if (_books && JSON.parse(_books).length === this.totalContent) {
       this.books = JSON.parse(_books)
       this.tableDatas = group(this.books, this.pageSize)
       this.tableData = this.tableDatas[this.currentPage - 1]

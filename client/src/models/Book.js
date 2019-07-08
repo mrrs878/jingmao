@@ -1,14 +1,8 @@
 import { getBooks, getBook, delBook, addBook, getCommentsByBid } from '../api/api'
 
 class Book {
-  constructor(price = 0, rate = 0, author = '', name = '', cid = '', publisher = '', cover = '') {
-    this.price = price
-    this.rate = rate
-    this.author = author
-    this.name = name
-    this.cid = cid
-    this.publisher = publisher
-    this.cover = cover
+  constructor(_data = {}) {
+    this.data = _data
   }
 
   getBooks({ page, size, cb }) {
@@ -29,7 +23,7 @@ class Book {
         return getCommentsByBid(bid)
       })
       .then(result => {
-        book.data.data.book['comments'] = result.data.data
+        book.data.data.book['comments'] = result.data.data.comments
         cb(book)
       })
       .catch(err => {

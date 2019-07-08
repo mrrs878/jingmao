@@ -2,8 +2,11 @@ let Client = require("../models/Client");
 let moment = require("moment");
 
 const CLIENT = {
-  getClient(name) {
-    return Client.findOne({ name });
+  getClient(cid) {
+    return Client.findOne({ cid });
+  },
+  getClientByName(name) {
+    return Client.findOne({ name })
   },
   addClient(client) {
     let _client = new Client({

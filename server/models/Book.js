@@ -11,7 +11,7 @@ let bookSchema = mongoose.Schema({
   publisher: String,
   ctime: String,
   carousel: [],
-  cltid: [],
+  cltid: String,
   partition: String
 })
 

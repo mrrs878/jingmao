@@ -18,8 +18,8 @@ export const removeBought = bid =>
   ajax(`${USER_URL}/rmvBought/${bid}`, { bid }, {}, "POST");
 export const getCart = (page, size) =>
   ajax(`${USER_URL}/cart/${page}/${size}`, {}, {}, "GET");
-export const buyBooks = (bids, price) =>
-  ajax(`${USER_URL}/buy`, { bids, price }, {}, "POST");
+export const buyBooks = (bids, shops, price) =>
+  ajax(`${USER_URL}/buy`, { bids, shops, price }, {}, "POST");
 export const addCart = bid =>
   ajax(`${USER_URL}/add/${bid}`, { bid }, {}, "POST");
 export const removeCart = (bid, type = false) =>

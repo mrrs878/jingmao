@@ -10,4 +10,8 @@ router.post("/signup", (req, res) => {
   clientSer.signup(req, res);
 });
 
+router.get("/:cid", (req, res) => {
+  clientSer.getClient(req, res);
+});
+
 module.exports = router;

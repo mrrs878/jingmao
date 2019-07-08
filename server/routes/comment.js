@@ -11,4 +11,8 @@ router.post("/bid/*", (req, res) => {
   commentServ.getCommentsByBid(req, res);
 });
 
+router.get("/bid/:bid", (req, res) => {
+  commentServ.getCommentsByBid(req, res)
+})
+
 module.exports = router;
