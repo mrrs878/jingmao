@@ -11,31 +11,34 @@ const BOOK = {
     }
     return Book.find({ bid: /\\*/i });
   },
+  getBooksByCltid(cltid, page, size) {
+    if (size) {
+      return Book.find({ cltid }, null, {
+        skip: page * size,
+        limit: parseInt(size)
+      });
+    }
+    return Book.find({cltid})
+  },
   getBookById(bid) {
-    return Book.findOne({ bid: bid });
+    return Book.findOne({ bid });
   },
   getBookNameLike(name) {
     return Book.find({ name: {$regex: eval(`/${name}/i`)} })
   },
-  editBook(bid) {},
+  updateBook(book) {
+    let _book = new Book({ ...book })
+    _book.utime = new moment().format("YYYY--MM--DD HH:mm:ss")
+    return _book.save()
+  },
   delBook(bid) {
     return Book.deleteOne({ bid: bid });
   },
   addBook(_book) {
-    console.log(_book);
     let book = new Book({
-      bid: Math.random()
-        .toString(36)
-        .slice(2),
-      price: _book.price,
-      rate: _book.rate,
       cid: new Array(),
-      author: _book.author,
-      name: _book.name,
-      content: _book.content,
-      publisher: _book.publisher,
       ctime: new moment().format("YYYY--MM--DD HH:mm:ss"),
-      carousel: _book._carousel
+      ..._book
     });
     return book.save();
   },

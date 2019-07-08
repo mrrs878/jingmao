@@ -5,7 +5,7 @@
       <el-table
         ref="multipleTable"
         :data="tableData"
-        :height='600'
+        :height="600"
         @row-click="rowClick"
         tooltip-effect="dark"
         style="width: 90%; margin: 0 auto;"
@@ -31,7 +31,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[5, 10, 15]"
+        :page-sizes="[2, 10, 15]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalContent"
@@ -58,12 +58,13 @@ function group(array, subGroupLength) {
 export default {
   data() {
     return {
-      books: new Array(),
-      tableData: new Array(),
       tableDatas: new Array(),
+      tableData: new Array(),
+      books: new Array(),
       multipleSelection: new Array(),
       currentPage: 1,
-      pageSize: 5,
+      lastPage: 0,
+      pageSize: 2,
       totalContent: 0,
     }
   },
@@ -106,13 +107,24 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      this.tableDatas = group(this.books, this.pageSize)
-      this.tableData = this.tableDatas[this.currentPage - 1]
-      console.log(this.tableData, this.tableDatas);
-      
+      if (this.books.length === this.user.data.bid.length) {
+        this.tableDatas = group(this.books, this.pageSize)
+        this.tableData = this.tableDatas[this.currentPage - 1]
+        return
+      }
+      this.getBooks()
     },
     handleCurrentChange(val) {
-      this.tableData = this.tableDatas[val - 1]
+      this.currentPage = val
+
+      if (
+        this.currentPage <= this.lastPage ||
+        this.books.length === this.user.data.bid.length
+      ) {
+        this.tableData = this.tableDatas[val - 1]
+        return
+      }
+      this.getBooks()
     },
     rowClick(row, column, event) {
       if (column.label === 'action') {
@@ -120,19 +132,36 @@ export default {
       }
       this.$router.push(`/book/detail/${row.bid}`)
     },
+    getBooks() {
+      let { currentPage, lastPage, pageSize } = this
+
+      this.book.getBooks({
+        page: currentPage - 1,
+        size: pageSize,
+        cb: result => {
+          this.lastPage = currentPage
+          this.books = this.books.concat(result.data.books)
+          this.tableDatas = group(this.books, pageSize)
+          this.tableData = this.tableDatas[this.currentPage - 1]
+          localStorage.setItem('books', JSON.stringify(this.books))
+        },
+      })
+    },
   },
   computed: {
-    ...mapState(['book']),
+    ...mapState(['book', 'user']),
   },
   mounted() {
-    this.book.getBooks({
-      cb: result => {
-        this.books = result.data.data.books
-        this.totalContent = this.books.length
-        this.tableDatas = group(this.books, this.pageSize)
-        this.tableData = this.tableDatas[this.currentPage - 1]
-      },
-    })
+    this.totalContent = this.user.data.bid.length
+    let _books = localStorage.getItem('books')
+    if (_books) {
+      this.books = JSON.parse(_books)
+      this.tableDatas = group(this.books, this.pageSize)
+      this.tableData = this.tableDatas[this.currentPage - 1]
+    } else {
+      localStorage.setItem('books', JSON.stringify(new Array()))
+      this.getBooks()
+    }
   },
 }
 </script>

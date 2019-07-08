@@ -2,24 +2,8 @@ import { signin, signup, getUser } from '../api/api'
 import store from '../store/store'
 
 class User {
-  constructor(
-    uid = '',
-    name = '',
-    cid = [],
-    bid = [],
-    balance = '',
-    avatar = '',
-    ctime = '',
-    utime = ''
-  ) {
-    this.uid = uid
-    this.name = name
-    this.cid = cid
-    this.bid = bid
-    this.balance = balance
-    this.avatar = avatar
-    this.ctime = ctime
-    this.utime = utime
+  constructor(data = {}) {
+    this.data = data
   }
 
   signin({ name, pwd, cb }) {
@@ -28,7 +12,7 @@ class User {
         let data = result.data.data
         localStorage.setItem('token', data.token)
         if (data.token) {
-          store.dispatch('updateUser', data.user.user)
+          store.dispatch('updateClient', data.client)
         }
         cb(data)
       })
@@ -47,10 +31,20 @@ class User {
       })
   }
 
-  getUser({ uid, cb }) {
-    getUser(uid)
+  getUser({ cid, cb }) {
+    getUser(cid)
       .then(result => {
         cb(result)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  updateInfo() {
+    this.getUser(store.state.client.data.cid)
+      .then(res => {
+        store.dispatch('updateClient', res.data.data.client)
       })
       .catch(err => {
         console.log(err)

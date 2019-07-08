@@ -2,7 +2,7 @@
   <div class="content padding-top">
     <profile-header :title="$route.params.pathMatch"></profile-header>
     <div class="partition-info padding" v-show="partitionInfo.name">
-      <img :src="partitionInfo.cover" alt>
+      <img :src="partitionInfo.cover" alt />
       <span>{{partitionInfo.summary}}</span>
     </div>
     <keep-alive>
@@ -13,7 +13,7 @@
             :key="book.index"
             @click="$router.push(`/home/detail/shop/${book.bid}`)"
           >
-            <img :src="book.carousel[0]" width="30%" alt>
+            <img :src="book.carousel[0]" width="30%" alt />
             <div class="shop-info">
               <p class="title">{{book.name}}</p>
               <div class="text">{{book.content}}</div>
@@ -65,7 +65,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$dialog.loading.open('很快加载好了...');
+    this.$dialog.loading.open("很快加载好了...");
   },
   created() {
     let { page, size, title_ } = this;
@@ -83,10 +83,9 @@ export default {
       cb: res => {
         this.bookList = res.data.books;
         this.page++;
-    this.$dialog.loading.close();
+        this.$dialog.loading.close();
       }
     });
-
   },
   computed: {
     ...mapState(["partition", "book"])
@@ -123,13 +122,16 @@ li {
   padding-bottom: 0.25rem;
   margin-top: 0.4rem;
   &::after {
-    content: " ";
-    display: block;
-    height: 1px;
-    width: 100%;
+    content: "";
     position: absolute;
     bottom: 0;
-    background-color: #ccc;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
   }
   .select-icon {
     align-self: center;

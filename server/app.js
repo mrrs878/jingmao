@@ -12,6 +12,8 @@ var commentRouter = require("./routes/comment");
 var secKillRouter = require("./routes/secKill");
 var partitionRouter = require("./routes/partition");
 
+var clientRouter = require("./routes/client");
+
 var app = express();
 
 mongoose.connect("mongodb://localhost/jingmao", { useNewUrlParser: true });
@@ -36,6 +38,8 @@ app.use("/api/book", bookRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/secKill", secKillRouter);
 app.use("/api/partition", partitionRouter);
+
+app.use("/api/client", clientRouter);
 
 app.get("/", (req, res) => {
   res.json("qqqqq");

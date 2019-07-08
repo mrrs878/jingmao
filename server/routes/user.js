@@ -2,7 +2,7 @@ let express = require("express");
 let router = express.Router();
 
 let userService = require("../services/userSer");
-let jwtWare = require("../middleware/jwt");
+let jwtWare = require("../middleware/jwtUser");
 
 router.post("/signup", (req, res) => {
   userService.signup(req, res);
@@ -60,9 +60,9 @@ router.put("/editPassword", jwtWare, (req, res) => {
   userService.editPassword(req, res);
 });
 
-router.put('/fgtPwd', (req, res) => {
-  userService.fgtPwd(req ,res)
-})
+router.put("/fgtPwd", (req, res) => {
+  userService.fgtPwd(req, res);
+});
 
 router.put("/editEmail", jwtWare, (req, res) => {
   userService.editEmail(req, res);

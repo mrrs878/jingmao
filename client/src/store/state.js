@@ -1,10 +1,10 @@
-import User from '../models/User'
+import Client from '../models/Client'
 import Book from '../models/Book'
 import Comment from '../models/Comment'
 import SecKill from '../models/SecKill'
 
 export default {
-  user: new User(),
+  client: new Client(),
   book: new Book(),
   comment: new Comment(),
   secKill: new SecKill()

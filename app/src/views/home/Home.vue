@@ -31,10 +31,10 @@
           <p class="favorable">每满100减40</p>
           <img src="../../assets/img/react_vue.jpg" width="100%" alt srcset />
         </div>
-        <div class="top-bottom left-right" @click="$router.push('/partition/jQuery')">
-          <span class="title">jQuery</span>
+        <div class="top-bottom left-right" @click="$router.push('/partition/go')">
+          <span class="title">Go</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/jquery.jpg" width="100%" alt srcset />
+          <img src="../../assets/img/go.png" width="100%" alt srcset />
         </div>
         <div class="top-bottom" @click="$router.push('/partition/nodejs')">
           <span class="title">Node.js</span>
@@ -51,10 +51,10 @@
           <p class="favorable">每满100减40</p>
           <img src="../../assets/img/nosql.jpg" width="100%" alt srcset />
         </div>
-        <div @click="$router.push('/partition/go')">
-          <span class="title">Go</span>
+        <div @click="$router.push('/partition/other')">
+          <span class="title">other</span>
           <p class="favorable">每满100减40</p>
-          <img src="../../assets/img/go.png" width="100%" alt srcset />
+          <!-- <img src="../../assets/img/go.png" width="100%" alt srcset /> -->
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="ruleForm.password"></el-input>
+        <el-input v-model="ruleForm.password" show-password></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即登录</el-button>
@@ -39,7 +39,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 8, max: 20, message: '长度在 8 到 20 个字符', trigger: 'blur' },
         ],
-      }
+      },
     }
   },
   methods: {
@@ -56,11 +56,12 @@ export default {
             name: this.ruleForm.name,
             pwd: this.ruleForm.password,
             cb: result => {
+              console.log(result)
               loading.close()
               if (result.token) {
                 this.$router.push('/home')
               } else {
-                this.$message.error(result);
+                this.$message.error(result)
               }
             },
           })

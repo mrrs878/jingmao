@@ -10,7 +10,9 @@ let bookSchema = mongoose.Schema({
   content: String,
   publisher: String,
   ctime: String,
-  carousel: []
+  carousel: [],
+  cltid: [],
+  partition: String
 })
 
 let Book = mongoose.model('Book', bookSchema)
